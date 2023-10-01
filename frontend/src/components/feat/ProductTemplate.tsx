@@ -1,6 +1,7 @@
 import { ProductSchema } from "@/api/rest/actions/products";
 import { ERoutes } from "@/routing/routes/Routes.enum";
 import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
 
 type Props = {
   product: ProductSchema;
@@ -14,9 +15,7 @@ const ProductTemplate = ({ product }: Props) => {
       <p>{product.category}</p>
       <p>{product.description}</p>
       <p>{product.price}</p>
-      <Link to={`${ERoutes.products}/${product.id}`}>
-        <img src={product.image} />
-      </Link>
+      <Button>Click me</Button>
       <Link to={`${ERoutes.products}/${product.id}`}>
         <img src={product.thumbnail} />
       </Link>

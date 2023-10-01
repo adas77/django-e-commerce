@@ -10,10 +10,18 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = '__all__'
-
+        
+    def get_category(self, obj):
+        category_id = obj.category.id
+        try:
+            category_name = Category.objects.get(id=category_id).name
+            return category_name
+        except Category.DoesNotExist:
+            return None
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
