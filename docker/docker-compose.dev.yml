@@ -12,6 +12,16 @@ services:
     depends_on:
       - redis
 
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    container_name: ${NODE_CONTAINER_NAME}
+    ports:
+      - 5173:5173
+    volumes:
+      - ../frontend:/app
+
   redis:
     build:
       context: ..
