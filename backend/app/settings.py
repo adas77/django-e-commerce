@@ -45,8 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    'django_celery_results',
+
     "rest_framework",
     "rest_framework_simplejwt",
+
     "api.apps.ApiConfig",
 ]
 
@@ -135,3 +138,18 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "mediafiles/")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_SENDER = "ecommerce@example.com"
+
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BEAT_SCHEDULE = {
+    'send-payment-reminder': {
+        'task': 'app.tasks.send_payment_reminder',
+        'schedule': timedelta(minutes=10),
+    },
+}

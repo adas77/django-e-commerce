@@ -20,6 +20,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = '__all__'
 
+class OrderDetailSerializer(serializers.Serializer):
+    product_id=serializers.IntegerField()
+    total_quantity_ordered=serializers.IntegerField()
+    
 
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True, read_only=True)

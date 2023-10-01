@@ -1,0 +1,45 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.python
+    container_name: ${PYTHON_CONTAINER_NAME}
+    command: make d-cmd
+    ports:
+      - ${DJANGO_APP_PORT}:${DJANGO_APP_PORT}
+    volumes:
+      - ..:/app
+    depends_on:
+      - redis
+
+  redis:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.redis
+    container_name: ${REDIS_CONTAINER_NAME}
+
+  celery-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.python
+    container_name: ${CELERY_WORKER_CONTAINER_NAME}
+    command: "celery -A app worker -l INFO"
+    volumes:
+      - ../backend:/app
+    depends_on:
+      - api
+      - redis
+    restart: on-failure
+
+  celery-beat:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.python
+    container_name: ${CELERY_BEAT_CONTAINER_NAME}
+    command: "celery -A app beat -l INFO"
+    volumes:
+      - ../backend:/app
+    depends_on:
+      - api
+      - redis
+    restart: on-failure
