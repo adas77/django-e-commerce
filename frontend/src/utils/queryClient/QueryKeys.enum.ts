@@ -3,5 +3,5 @@ export enum EQueryKeys {
   product = "qk_product",
 
   orders = "qk_orders",
-  order = ":qk_order",
+  order = "qk_order",
 }
