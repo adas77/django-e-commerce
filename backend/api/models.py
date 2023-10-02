@@ -16,11 +16,10 @@ class User(AbstractUser):
     SELLER = 2
 
     ROLE_CHOICES = (
-        (CLIENT, 'Client'),
-        (SELLER, 'Seller'),
+        (CLIENT, "Client"),
+        (SELLER, "Seller"),
     )
-    role = models.PositiveSmallIntegerField(
-        choices=ROLE_CHOICES, blank=True, null=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -45,7 +44,8 @@ class Product(models.Model):
             img.thumbnail((200, 200))
             thumbnail_path = self.upload_to(os.path.basename(self.image.name))
             thumbnail_path_with_media_root = os.path.join(
-                settings.MEDIA_ROOT, thumbnail_path)
+                settings.MEDIA_ROOT, thumbnail_path
+            )
             self.thumbnail = thumbnail_path
             self.save()
             img.save(thumbnail_path_with_media_root)
@@ -71,12 +71,14 @@ class Order(models.Model):
     # FIXME: dont work
     def create_payment_due_date():
         return timezone.now() + timezone.timedelta(days=5)
-    
+
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     delivery_address = models.TextField()
     order_date = models.DateTimeField(auto_now_add=True)
     payment_due_date = models.DateTimeField(default=create_payment_due_date)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True
+    )
 
     def __str__(self):
         return f"Order #{self.pk}"
@@ -85,16 +87,18 @@ class Order(models.Model):
 @receiver(post_save, sender=Order)
 def send_email_after_creating_order(sender, instance, **kwargs):
     send_mail(
-            "Your order has been created",
-            f"Remember to make a payment of {instance.total_price} PLN by {instance.payment_due_date}",
-            settings.EMAIL_SENDER,
-            [instance.client.email],
-            fail_silently=False,
-        )
+        "Your order has been created",
+        f"Remember to make a payment of {instance.total_price} PLN by {instance.payment_due_date}",
+        settings.EMAIL_SENDER,
+        [instance.client.email],
+        fail_silently=False,
+    )
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
-        Order, related_name='order_items', on_delete=models.CASCADE)
+        Order, related_name="order_items", on_delete=models.CASCADE
+    )
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 

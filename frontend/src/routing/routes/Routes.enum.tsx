@@ -3,8 +3,12 @@ export enum ERoutes {
   login = "/login",
 
   products = "/products",
-  product = ":productId",
 
   orders = "/orders",
+}
+
+export enum ERoutesDetail {
+  product = ":productId",
+
   order = ":orderId",
 }

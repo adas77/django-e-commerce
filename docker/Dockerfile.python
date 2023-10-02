@@ -1,5 +1,8 @@
 FROM python:3.11.5
 WORKDIR /app
 COPY ./backend/requirements.txt /code/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY .. /app
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN useradd -u 1000 -ms /bin/bash myuser
+RUN chown myuser:myuser /app
+USER myuser

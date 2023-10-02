@@ -12,10 +12,12 @@ DOTENV_PATH = os.path.join(
 load_dotenv(DOTENV_PATH)
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
-    default="UNSECURE_KEY_0ddd3b8902084eb48feeb49775434b344f6ca69a4eb71f32b39fb018bc89f37b")
+    default="UNSECURE_KEY_0ddd3b8902084eb48feeb49775434b344f6ca69a4eb71f32b39fb018bc89f37b",
+)
 DEBUG = int(os.environ.get("DJANGO_DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS", default="127.0.0.1 localhost").split()
+    "DJANGO_ALLOWED_HOSTS", default="127.0.0.1 localhost"
+).split()
 HOST = ALLOWED_HOSTS[0]
 PORT = os.environ.get("DJANGO_APP_PORT", default=8000)
 
@@ -28,8 +30,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
 }
 
 SIMPLE_JWT = {
@@ -44,27 +46,22 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    'django_celery_results',
-
+    "django_celery_results",
     "rest_framework",
     "rest_framework_simplejwt",
-    
-    'corsheaders',
-
+    "corsheaders",
     "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    
 ]
 
 ROOT_URLCONF = "app.urls"
@@ -147,25 +144,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_SENDER = "ecommerce@example.com"
 
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = "django-db"
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
 CELERY_BEAT_SCHEDULE = {
-    'send-payment-reminder': {
-        'task': 'app.tasks.send_payment_reminder',
-        'schedule': timedelta(minutes=10),
+    "send-payment-reminder": {
+        "task": "app.tasks.send_payment_reminder",
+        "schedule": timedelta(seconds=10),
     },
 }
 
-# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-]
-CORS_ALLOWED_ORIGINS_REGEXES = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
 ]

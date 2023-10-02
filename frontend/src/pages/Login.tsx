@@ -1,6 +1,7 @@
 import LoginForm from "@/components/LoginForm";
 import { TEST_CREDENTIALS } from "@/consts";
 import useAuth from "@/hooks/useAuth/useAuth";
+import Center from "@/routing/abstract/Center";
 import { ERoutes } from "@/routing/routes/Routes.enum";
 import { Navigate } from "react-router-dom";
 
@@ -12,7 +13,7 @@ const Login = () => {
   }
 
   return (
-    <div className="grid h-screen place-items-center">
+    <Center>
       <div className="flex gap-32">
         <LoginForm
           defaultUsername={TEST_CREDENTIALS.username_client}
@@ -25,7 +26,7 @@ const Login = () => {
           title={"to modify products and see statistics"}
         />
       </div>
-    </div>
+    </Center>
   );
 };
 

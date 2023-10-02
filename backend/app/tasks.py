@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 
 import django
@@ -16,8 +15,7 @@ from api.models import Order
 def send_payment_reminder():
     time_offset = timezone.now() + timedelta(days=1)
 
-    orders_to_remind = Order.objects.filter(
-        payment_due_date__lt=time_offset)
+    orders_to_remind = Order.objects.filter(payment_due_date__lt=time_offset)
 
     for order in orders_to_remind:
         send_mail(

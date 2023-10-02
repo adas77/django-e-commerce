@@ -3,7 +3,7 @@ import NotFound from "@/pages/NotFound";
 import Root from "@/pages/Root";
 import { BrowserRouter, Route, Routes as _Routes } from "react-router-dom";
 import Layout from "../abstract/Layout";
-import { ERoutes } from "./Routes.enum";
+import { ERoutes, ERoutesDetail } from "./Routes.enum";
 import Products from "@/pages/products/Products";
 import Product from "@/pages/products/Product";
 import Orders from "@/pages/orders/Orders";
@@ -18,13 +18,13 @@ const Routes = () => {
 
           <Route path={ERoutes.products} element={<Products />} />
           <Route
-            path={`${ERoutes.products}/${ERoutes.product}`}
+            path={`${ERoutes.products}/${ERoutesDetail.product}`}
             element={<Product />}
           />
 
           <Route path={ERoutes.orders} element={<Orders />} />
           <Route
-            path={`${ERoutes.orders}/${ERoutes.order}`}
+            path={`${ERoutes.orders}/${ERoutesDetail.order}`}
             element={<Order />}
           />
 

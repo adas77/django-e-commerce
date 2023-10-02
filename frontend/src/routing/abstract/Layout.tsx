@@ -17,8 +17,8 @@ const Layout = () => {
       <main className="mb-auto">
         <Outlet />
       </main>
-      <Toaster />
       <Footer />
+      <Toaster />
     </div>
   );
 };
