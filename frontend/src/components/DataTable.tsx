@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
-
+import { Separator } from "./ui/separator";
 export type Filter = {
   key: "name" | "category" | "description" | "price";
   value: string;
@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-end space-x-2 py-4">
         <Input
           type={key === "price" ? "number" : "text"}
-          placeholder={`Filter ${key}s...`}
+          placeholder={`Filter by ${key}...`}
           value={value}
           onChange={(event) =>
             setValue && setValue({ key: key, value: event.target.value })
@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
             <Button variant="outline">Filter</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+            <DropdownMenuLabel>Filter key</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {["name", "category", "description", "price"].map((label) => (
               <DropdownMenuCheckboxItem
@@ -94,6 +94,7 @@ export function DataTable<TData, TValue>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        <Separator orientation="vertical" />
         <Button
           variant="outline"
           size="sm"
