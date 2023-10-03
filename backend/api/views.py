@@ -70,7 +70,7 @@ class ProductMixinView(
         pk = kwargs.get(self.lookup_field)
         if pk is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        return self.update(request, *args, **kwargs)
+        return self.partial_update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get(self.lookup_field)

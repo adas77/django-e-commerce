@@ -60,8 +60,8 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
 @receiver(post_save, sender=Product)
+# TODO patch signal
 def generate_product_thumbnail(sender, instance, **kwargs):
     if instance.image and not instance.thumbnail:
         instance.generate_thumbnail()

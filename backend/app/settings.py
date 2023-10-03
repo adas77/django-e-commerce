@@ -155,7 +155,7 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULE = {
     "send-payment-reminder": {
         "task": "app.tasks.send_payment_reminder",
-        "schedule": timedelta(seconds=10),
+        "schedule": timedelta(minutes=10),
     },
 }
 

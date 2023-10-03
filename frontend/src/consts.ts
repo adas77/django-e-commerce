@@ -8,3 +8,8 @@ export const TEST_CREDENTIALS = {
   username_seller: "seller",
   username_client: "client",
 };
+
+export const IMAGE = {
+  max_file_size: 50_000_000,
+  accepted_image_types: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+};
