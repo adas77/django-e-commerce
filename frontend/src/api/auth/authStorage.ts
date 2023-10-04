@@ -26,4 +26,11 @@ export class AuthStorage {
   static getRefreshToken(): string | null {
     return this.storage.getItem(this.refresh_token_key);
   }
+
+  static logout() {
+    this.removeAccessToken();
+    this.removeRefreshToken();
+  }
 }
+
+export type UserRole = "Client" | "Seller";

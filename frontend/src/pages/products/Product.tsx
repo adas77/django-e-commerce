@@ -16,7 +16,8 @@ const Product = () => {
   if (error || !data) return `Error! ${error}`;
   return (
     <Center>
-      <ProductTemplate product={data} />
+      <ProductTemplate product={data} role={"Client"} />
+      <ProductTemplate product={data} role={"Seller"} />
     </Center>
   );
 };

@@ -6,7 +6,7 @@ import { ERoutes } from "../routes/Routes.enum";
 import { Toaster } from "@/components/ui/toaster";
 const Layout = () => {
   const { isAuth } = useAuth();
-
+  // TODO: auth
   if (!isAuth) {
     return <Navigate to={ERoutes.login} replace />;
   }

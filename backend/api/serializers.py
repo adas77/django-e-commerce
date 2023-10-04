@@ -12,10 +12,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Product
-        fields =  "__all__"
+        fields = "__all__"
 
     def to_representation(self, instance):
         result = super(ProductSerializer, self).to_representation(instance)
@@ -28,7 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = "__all__"
+        fields = ("product", "quantity")
 
 
 class OrderDetailSerializer(serializers.Serializer):

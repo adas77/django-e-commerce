@@ -1,4 +1,6 @@
 import { ERoutes } from "@/routing/routes/Routes.enum";
+import { Button } from "./ui/button";
+import { AuthStorage } from "@/api/auth/authStorage";
 
 const Nav = () => {
   const links = Object.entries(ERoutes).map((route) => {
@@ -17,6 +19,7 @@ const Nav = () => {
             {l.label}
           </a>
         ))}
+        <Button onClick={() => AuthStorage.logout()}>logout</Button>
       </div>
     </div>
   );

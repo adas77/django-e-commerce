@@ -1,6 +1,9 @@
 from datetime import datetime
 
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import Sum
+from django.utils.timezone import make_aware
 from rest_framework import generics, mixins, status
 from rest_framework.response import Response
 
@@ -90,7 +93,6 @@ class ProductCategoryMixinView(
     lookup_field = "pk"
 
     def get(self, request, *args, **kwargs):
-        print(args, kwargs)
         pk = kwargs.get("pk")
         if pk is None:
             return self.list(request, *args, **kwargs)
@@ -108,18 +110,30 @@ class CreateOrderView(generics.CreateAPIView):
         order_items_data = request.data.get("order_items", [])
         order_serializer = self.serializer_class(data=request.data)
         order_serializer.is_valid(raise_exception=True)
-        order = order_serializer.save()
+        with transaction.atomic():
+            order = order_serializer.save()
+            total_price = 0
 
-        total_price = 0
-        for item_data in order_items_data:
-            item_data["order"] = order.id
-            item_serializer = OrderItemSerializer(data=item_data)
-            item_serializer.is_valid(raise_exception=True)
-            item = item_serializer.save(order=order)
-            total_price += item.quantity * item.product.price
+            for item_data in order_items_data:
+                item_data["order"] = order.id
+                item_serializer = OrderItemSerializer(data=item_data)
+                item_serializer.is_valid(raise_exception=True)
+                item = item_serializer.save(order=order)
 
-        order.total_price = total_price
-        order.save()
+                product = item.product
+                if item.quantity > product.quantity:
+                    return Response(
+                        f"Cannot order {item.quantity} of {product.name}, only {product.quantity} available",
+                        status=status.HTTP_409_CONFLICT,
+                    )
+
+                product.quantity -= item.quantity
+                product.save()
+
+                total_price += item.quantity * product.price
+
+            order.total_price = total_price
+            order.save()
 
         return Response(order_serializer.data, status=status.HTTP_201_CREATED)
 
@@ -128,18 +142,28 @@ class OrderStatsView(generics.ListAPIView):
     serializer_class = OrderDetailSerializer
 
     def get_queryset(self):
-        # TODO: validate date
         date_from = self.request.GET.get("date_from")
         date_to = self.request.GET.get("date_to")
         num_products = int(self.request.GET.get("num_products", 10))
-        date_from = datetime.strptime(date_from, "%Y-%m-%d")
-        date_to = datetime.strptime(date_to, "%Y-%m-%d")
+
+        if date_from is None or date_to is None:
+            raise ValidationError("Both 'date_from' and 'date_to' are required.")
+        try:
+            date_from = make_aware(datetime.strptime(date_from, "%Y-%m-%d"))
+            date_to = make_aware(datetime.strptime(date_to, "%Y-%m-%d"))
+        except ValueError:
+            raise ValidationError("Invalid date format. Please use YYYY-MM-DD.")
+
+        if date_from > date_to:
+            raise ValidationError(
+                "Invalid date range. 'date_from' must be before 'date_to'."
+            )
+
         queryset = (
             OrderItem.objects.filter(order__order_date__range=(date_from, date_to))
-            .values(
-                "product_id",
-            )
+            .values("product_id")
             .annotate(total_quantity_ordered=Sum("quantity"))
             .order_by("-total_quantity_ordered")[:num_products]
         )
+
         return queryset

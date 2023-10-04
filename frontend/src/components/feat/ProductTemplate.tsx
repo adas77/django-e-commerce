@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+import { UserRole } from "@/api/auth/authStorage";
 import serviceProduct, {
   ProductSchema,
   ProductUpdateSchema,
@@ -25,11 +26,14 @@ import { useToast } from "../ui/use-toast";
 
 type Props = {
   product: ProductSchema;
+  role: UserRole;
 };
 
 const ProductTemplate = ({
   product: { id, description, name, price, image },
+  role,
 }: Props) => {
+  // TODO: as client add product of quantity, validate quantity
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -78,11 +82,9 @@ const ProductTemplate = ({
       description,
       name,
       price,
-      image,
+      image: undefined,
     },
   });
-
-  console.log(form.getValues());
 
   async function onSubmit(values: z.infer<typeof productUpdateSchema>) {
     updateMutation(values);
@@ -102,7 +104,11 @@ const ProductTemplate = ({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="description" {...field} />
+                <Input
+                  disabled={role === "Client"}
+                  placeholder="description"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>This is product description</FormDescription>
               <FormMessage />
@@ -116,7 +122,11 @@ const ProductTemplate = ({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="name" {...field} />
+                <Input
+                  disabled={role === "Client"}
+                  placeholder="name"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>This is product name</FormDescription>
               <FormMessage />
@@ -131,6 +141,7 @@ const ProductTemplate = ({
               <FormLabel>Price</FormLabel>
               <FormControl>
                 <Input
+                  disabled={role === "Client"}
                   placeholder="price"
                   type="number"
                   {...field}
@@ -147,34 +158,41 @@ const ProductTemplate = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    field.onChange(e.currentTarget.files[0]);
-                  }}
-                />
-              </FormControl>
-              <FormDescription>This is the product image</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-between">
-          <Button type="submit" disabled={!form.formState.isDirty}>
-            Update
-          </Button>
-          <Button type="button" onClick={() => deleteMutation()}>
-            Delete
-          </Button>
-        </div>
+
+        {role === "Seller" && (
+          <>
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.currentTarget.files?.[0]) {
+                          field.onChange(e.currentTarget.files[0]);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>This is the product image</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-between">
+              <Button type="submit" disabled={!form.formState.isDirty}>
+                Update
+              </Button>
+              <Button type="button" onClick={() => deleteMutation()}>
+                Delete
+              </Button>
+            </div>
+          </>
+        )}
       </form>
     </Form>
   );

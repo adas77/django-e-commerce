@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+import { AuthStorage } from "@/api/auth/authStorage";
+import restClient from "@/api/rest";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,12 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import restClient from "@/api/rest";
-import { AuthStorage } from "@/api/auth/authStorage";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { useToast } from "./ui/use-toast";
-import { ToastAction } from "./ui/toast";
 
 const formSchema = z.object({
   username: z.string().min(1, {
@@ -27,6 +27,8 @@ const formSchema = z.object({
   }),
 });
 
+type LoginCredentials = z.infer<typeof formSchema>;
+
 type Props = {
   defaultUsername: string;
   defaultPassword: string;
@@ -35,7 +37,27 @@ type Props = {
 
 const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { mutate: loginMutate, isLoading } = useMutation({
+    mutationFn: async (credentials: LoginCredentials) => {
+      return (await restClient.post(`/token/`, credentials)).data;
+    },
+    onSuccess(data) {
+      AuthStorage.setAccessToken(data.access);
+      AuthStorage.setRefreshToken(data.refresh);
+      toast({
+        variant: "default",
+        title: "Successfully logged in",
+      });
+    },
+    onError() {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+    },
+  });
+  const form = useForm<LoginCredentials>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: defaultUsername,
@@ -43,23 +65,7 @@ const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: query mutation
-    const res = await restClient.post(`/token/`, values);
-    console.log(res);
-    if (res.status === 200) {
-      console.log("FFF");
-      const data = res.data;
-      AuthStorage.setAccessToken(data.access);
-      AuthStorage.setRefreshToken(data.refresh);
-    } else {
-      console.log("UUUFFF");
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-    }
+    loginMutate(values);
   }
 
   return (
@@ -98,7 +104,9 @@ const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={isLoading} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

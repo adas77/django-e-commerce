@@ -1,8 +1,8 @@
+import { Filter, Sorting } from "@/components/DataTable";
+import { IMAGE, PAGINATION } from "@/consts";
+import { AxiosResponse } from "axios";
 import { z } from "zod";
 import restClient from "..";
-import { IMAGE, PAGINATION } from "@/consts";
-import { Filter, Sorting } from "@/components/DataTable";
-import { AxiosResponse } from "axios";
 
 const productSchemaValidator = z.object({
   id: z.number(),
@@ -24,17 +24,18 @@ export const productUpdateSchema = z.object({
   price: z.string().min(1, {
     message: "Price must be positive number.",
   }),
-  image: z
-    .any()
-    .optional()
-    .refine(
-      (file) => file.size <= IMAGE.max_file_size,
-      `Max image size is ${IMAGE.max_file_size}.`
-    )
-    .refine(
-      (file) => IMAGE.accepted_image_types.includes(file.type),
-      `Only ${IMAGE.accepted_image_types.join(", ")} formats are supported.`
-    ),
+  image: z.optional(
+    z
+      .any()
+      .refine(
+        (file) => file.size <= IMAGE.max_file_size,
+        `Max image size is ${IMAGE.max_file_size}.`
+      )
+      .refine(
+        (file) => IMAGE.accepted_image_types.includes(file.type),
+        `Only ${IMAGE.accepted_image_types.join(", ")} formats are supported.`
+      )
+  ),
 });
 
 const requestSchemaValidator = z.object({
@@ -81,13 +82,13 @@ const serviceProduct = {
     id: string,
     updateProduct: ProductUpdateSchema
   ): Promise<AxiosResponse> {
-    console.log("updateProduct", updateProduct);
     const formData = new FormData();
     formData.append("name", updateProduct.name);
     formData.append("description", updateProduct.description);
     formData.append("price", updateProduct.price);
-
-    formData.append("image", updateProduct.image);
+    if (updateProduct.image) {
+      formData.append("image", updateProduct.image);
+    }
     const res = await restClient.patch(`/product/${id}/`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });

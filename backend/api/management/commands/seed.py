@@ -14,22 +14,41 @@ fake = Faker()
 
 
 def create_fake_users(num_users):
-    for _ in range(num_users):
-        username = fake.unique.user_name()
-        email = fake.unique.email()
-        password = "fF1aqm18"
-        role_id, _ = random.choice(User.ROLE_CHOICES)
-        first_name = fake.first_name()
-        last_name = fake.last_name()
-        
-        User.objects.create(
-            username=username,
-            email=email,
-            password=password,
-            role=role_id,
-            first_name=first_name,
-            last_name=last_name
-        )
+    # for _ in range(num_users):
+    #     username = fake.unique.user_name()
+    #     email = fake.unique.email()
+    #     password = "fF1aqm18"
+    #     role_id, _ = random.choice(User.ROLE_CHOICES)
+    #     first_name = fake.first_name()
+    #     last_name = fake.last_name()
+
+    #     User.objects.create(
+    #         username=username,
+    #         email=email,
+    #         password=password,
+    #         role=role_id,
+    #         first_name=first_name,
+    #         last_name=last_name
+    #     )
+    password = "fF1aqm18"
+
+    User.objects.create(
+        username="client",
+        email=fake.unique.email(),
+        password=password,
+        role=User.CLIENT,
+        first_name=fake.first_name(),
+        last_name=fake.last_name(),
+    )
+
+    User.objects.create(
+        username="seller",
+        email=fake.unique.email(),
+        password=password,
+        role=User.SELLER,
+        first_name=fake.first_name(),
+        last_name=fake.last_name(),
+    )
 
 
 def create_fake_categories(num_categories):
@@ -45,8 +64,13 @@ def create_fake_products(num_products):
         description = fake.text()
         price = random.uniform(1, 1000)
         category = random.choice(categories)
+        quantity = random.randint(1, 100)
         product = Product.objects.create(
-            name=name, description=description, price=price, category=category
+            name=name,
+            description=description,
+            price=price,
+            category=category,
+            quantity=quantity,
         )
         image_directory = settings.MEDIA_ROOT
         image_filename = random.choice(os.listdir(image_directory))
