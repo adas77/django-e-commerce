@@ -6,34 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"fF1aqm18\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api}}/token/",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"token",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "token_refresh",
+			"name": "token_refresh Client",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -42,7 +15,7 @@
 					"formdata": [
 						{
 							"key": "refresh",
-							"value": "{{rt}}",
+							"value": "{{token_refresh_client}}",
 							"type": "text"
 						}
 					]
@@ -62,153 +35,204 @@
 			"response": []
 		},
 		{
-			"name": "token Client",
+			"name": "token_refresh Seller",
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"test_user___Client\",\n    \"password\": \"fF1aqm18\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api}}/token/",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"token",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "token Seller",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"test_user___Seller\",\n    \"password\": \"fF1aqm18\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api}}/token/",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"token",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST product",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
-					}
-				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "image",
-							"type": "file",
-							"src": "img/example.jpg"
-						},
-						{
-							"key": "name",
-							"value": "aaaa",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "bbbb",
-							"type": "text"
-						},
-						{
-							"key": "price",
-							"value": "21",
-							"type": "text"
-						},
-						{
-							"key": "category",
-							"value": "1",
+							"key": "refresh",
+							"value": "{{token_refresh_seller}}",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{api}}/product/",
+					"raw": "{{api}}/token/refresh/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"token",
+						"refresh",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token_access Client",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{login_credentials_client_username}}\",\n    \"password\": \"{{login_credentials_password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/token/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token_access Seller",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{login_credentials_seller_username}}\",\n    \"password\": \"{{login_credentials_password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/token/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET product_category Client",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/product/category",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET product_category Seller",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/product/category",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET products UNAUTHORIZED",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/product/?limit=10&offset=10&name=a&ordering=-price",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"product",
 						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "10"
+						},
+						{
+							"key": "name",
+							"value": "a"
+						},
+						{
+							"key": "ordering",
+							"value": "-price"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "DELETE product",
+			"name": "GET product UNAUTHORIZED",
 			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
-					}
-				],
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "{{api}}/product",
+					"raw": "{{api}}/product/1",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
-						"product"
+						"product",
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "POST category",
+			"name": "POST product_category Client",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"c\"\n}",
+					"raw": "{\n    \"name\":\"_UNIQUE_CATEGORY_NAME\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -229,20 +253,300 @@
 			"response": []
 		},
 		{
-			"name": "POST order",
+			"name": "POST product_category Seller",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"client\": 1,\n    \"delivery_address\": \"123 Main St\",\n    \"payment_due_date\": \"2023-10-31T00:00:00Z\",\n    \"order_items\": [\n        {\n            \"product\": 3,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 4,\n            \"quantity\": 2\n        }\n    ]\n}\n",
+					"raw": "{\n    \"name\":\"_UNIQUE_CATEGORY_NAME\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/product/category",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST product Client",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "img/example.jpg"
+						},
+						{
+							"key": "name",
+							"value": "_NAME",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "_DESCRIPTION",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "555",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "125",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/product/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST product Seller",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "img/example.jpg"
+						},
+						{
+							"key": "name",
+							"value": "_NAMEe",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "_DESCRIPTION",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "9",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "125",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/product/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE product Client",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/product/7/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"7",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE product Seller",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/product/7/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"7",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH product Client",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "_NEW_NAME",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "img/example.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/product/5/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"5",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH product Seller",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "_NEW_NAME",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "img/example.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/product/5/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"product",
+						"5",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST order Client",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\": 1,\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 8,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 9,\n            \"quantity\": 2\n        }\n    ]\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -263,19 +567,63 @@
 			"response": []
 		},
 		{
-			"name": "GET order",
+			"name": "POST order Seller",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\": 1,\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 8,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 9,\n            \"quantity\": 2\n        }\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api}}/order/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET most_freq_ordered Client",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"date_from\": \"2010-01-01\",\n    \"date_to\": \"2023-12-01\",\n    \"num_products\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{api}}/order/stats/?date_from=2023-01-01&date_to=2023-10-30&num_products=3",
+					"raw": "{{api}}/order/stats/",
 					"host": [
 						"{{api}}"
 					],
@@ -283,70 +631,43 @@
 						"order",
 						"stats",
 						""
-					],
-					"query": [
-						{
-							"key": "date_from",
-							"value": "2023-01-01"
-						},
-						{
-							"key": "date_to",
-							"value": "2023-10-30"
-						},
-						{
-							"key": "num_products",
-							"value": "3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET most_freq_ordered Seller",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"date_from\": \"2010-01-01\",\n    \"date_to\": \"2023-12-01\",\n    \"num_products\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET category",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
 					}
-				],
+				},
 				"url": {
-					"raw": "{{api}}/product/category",
+					"raw": "{{api}}/order/stats/",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
-						"product",
-						"category"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET products",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{te}}",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "{{api}}/product/2",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"product",
-						"2"
+						"order",
+						"stats",
+						""
 					]
 				}
 			},

@@ -41,3 +41,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+
+class DateRangeSerializer(serializers.Serializer):
+    date_from = serializers.DateField(input_formats=["%Y-%m-%d"])
+    date_to = serializers.DateField(input_formats=["%Y-%m-%d"])
+    num_products = serializers.IntegerField(default=10)

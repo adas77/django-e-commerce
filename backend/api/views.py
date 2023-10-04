@@ -1,15 +1,13 @@
-from datetime import datetime
-
-from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Sum
-from django.utils.timezone import make_aware
 from rest_framework import generics, mixins, status
 from rest_framework.response import Response
 
 from .models import Category, Order, OrderItem, Product
+from .permissions import IsClient, IsSeller, IsSellerOrReadOnly
 from .serializers import (
     CategorySerializer,
+    DateRangeSerializer,
     OrderDetailSerializer,
     OrderItemSerializer,
     OrderSerializer,
@@ -30,7 +28,7 @@ class ProductMixinView(
     lookup_field = "pk"
 
     # parser_classes = (MultiPartParser,)
-    # permission_classes = [IsSellerOrReadOnly]
+    permission_classes = [IsSellerOrReadOnly]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -91,9 +89,10 @@ class ProductCategoryMixinView(
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     lookup_field = "pk"
+    permission_classes = [IsSeller]
 
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
+        pk = kwargs.get(self.lookup_field)
         if pk is None:
             return self.list(request, *args, **kwargs)
         return self.retrieve(request, *args, **kwargs)
@@ -105,6 +104,7 @@ class ProductCategoryMixinView(
 class CreateOrderView(generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [IsClient]
 
     def create(self, request):
         order_items_data = request.data.get("order_items", [])
@@ -140,24 +140,18 @@ class CreateOrderView(generics.CreateAPIView):
 
 class OrderStatsView(generics.ListAPIView):
     serializer_class = OrderDetailSerializer
+    permission_classes = [IsSeller]
 
-    def get_queryset(self):
-        date_from = self.request.GET.get("date_from")
-        date_to = self.request.GET.get("date_to")
-        num_products = int(self.request.GET.get("num_products", 10))
+    def get(self, request):
+        serializer = DateRangeSerializer(data=request.data)
 
-        if date_from is None or date_to is None:
-            raise ValidationError("Both 'date_from' and 'date_to' are required.")
-        try:
-            date_from = make_aware(datetime.strptime(date_from, "%Y-%m-%d"))
-            date_to = make_aware(datetime.strptime(date_to, "%Y-%m-%d"))
-        except ValueError:
-            raise ValidationError("Invalid date format. Please use YYYY-MM-DD.")
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if date_from > date_to:
-            raise ValidationError(
-                "Invalid date range. 'date_from' must be before 'date_to'."
-            )
+        validated_data = serializer.validated_data
+        date_from = validated_data.get("date_from")
+        date_to = validated_data.get("date_to")
+        num_products = validated_data.get("num_products", 10)
 
         queryset = (
             OrderItem.objects.filter(order__order_date__range=(date_from, date_to))
@@ -166,4 +160,5 @@ class OrderStatsView(generics.ListAPIView):
             .order_by("-total_quantity_ordered")[:num_products]
         )
 
-        return queryset
+        data = list(queryset)
+        return Response(data)

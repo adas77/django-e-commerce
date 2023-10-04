@@ -32,23 +32,27 @@ def create_fake_users(num_users):
     #     )
     password = "fF1aqm18"
 
-    User.objects.create(
+    client = User.objects.create(
         username="client",
         email=fake.unique.email(),
-        password=password,
         role=User.CLIENT,
         first_name=fake.first_name(),
         last_name=fake.last_name(),
     )
 
-    User.objects.create(
+    seller = User.objects.create(
         username="seller",
         email=fake.unique.email(),
-        password=password,
         role=User.SELLER,
         first_name=fake.first_name(),
         last_name=fake.last_name(),
     )
+
+    client.set_password(password)
+    seller.set_password(password)
+
+    client.save()
+    seller.save()
 
 
 def create_fake_categories(num_categories):

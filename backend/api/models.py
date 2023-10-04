@@ -58,7 +58,10 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to=upload_to, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.generate_thumbnail()
+        if self._state.adding or (
+            self.image and self.image != self._meta.model.objects.get(pk=self.pk).image
+        ):
+            self.generate_thumbnail()
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -66,12 +69,13 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    @staticmethod
     def create_payment_due_date():
         return timezone.now() + timezone.timedelta(days=5)
 
     client = models.ForeignKey(User, on_delete=models.CASCADE)
-    delivery_address = models.TextField()
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    delivery_address = models.TextField(max_length=255)
     order_date = models.DateTimeField(auto_now_add=True)
     payment_due_date = models.DateTimeField(default=create_payment_due_date)
     total_price = models.DecimalField(
