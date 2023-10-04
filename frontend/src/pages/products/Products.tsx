@@ -81,13 +81,12 @@ const Products = () => {
     queryFn: () => serviceProduct.get(offset, filter, sorting),
     keepPreviousData: true,
   });
-  console.log(data);
   if (isLoading) return <p>Loading...</p>;
 
   if (error || !data) return `Error! ${error}`;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 mt-0">
       <DataTable
         columns={columns}
         data={data.results}

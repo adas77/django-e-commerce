@@ -4,7 +4,7 @@ from rest_framework import generics, mixins, status
 from rest_framework.response import Response
 
 from .models import Category, Order, OrderItem, Product
-from .permissions import IsClient, IsSeller, IsSellerOrReadOnly
+from .permissions import IsAuthenticated, IsClient, IsSeller, IsSellerOrReadOnly
 from .serializers import (
     CategorySerializer,
     DateRangeSerializer,
@@ -12,7 +12,17 @@ from .serializers import (
     OrderItemSerializer,
     OrderSerializer,
     ProductSerializer,
+    UserSerializer,
 )
+
+
+class MeView(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_serializer = self.serializer_class(instance=request.user)
+        return Response(user_serializer.data)
 
 
 class ProductMixinView(
@@ -108,6 +118,10 @@ class CreateOrderView(generics.CreateAPIView):
 
     def create(self, request):
         order_items_data = request.data.get("order_items", [])
+
+        client = self.request.user
+        request.data["client"] = client.pk
+
         order_serializer = self.serializer_class(data=request.data)
         order_serializer.is_valid(raise_exception=True)
         with transaction.atomic():

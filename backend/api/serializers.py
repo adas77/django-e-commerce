@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from rest_framework import serializers
 
-from .models import Category, Order, OrderItem, Product
+from .models import Category, Order, OrderItem, Product, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -19,6 +19,19 @@ class ProductSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(ProductSerializer, self).to_representation(instance)
         result["category"] = Category.objects.get(id=result["category"]).name
+        return OrderedDict(
+            [(key, result[key]) for key in result if result[key] is not None]
+        )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name", "email")
+
+    def to_representation(self, instance):
+        result = super(UserSerializer, self).to_representation(instance)
+        result["role_name"] = instance.get_role_name()
         return OrderedDict(
             [(key, result[key]) for key in result if result[key] is not None]
         )

@@ -1,3 +1,4 @@
+import useAuth from "@/api/auth/useAuth";
 import serviceProduct from "@/api/rest/actions/products";
 import ProductTemplate from "@/components/feat/ProductTemplate";
 import Center from "@/routing/abstract/Center";
@@ -10,14 +11,14 @@ const Product = () => {
   const { isLoading, error, data } = useQuery([EQueryKeys.products], () =>
     serviceProduct.getByID(productId!)
   );
+  const { data: sessionData } = useAuth();
 
   if (isLoading) return <p>Loading...</p>;
 
   if (error || !data) return `Error! ${error}`;
   return (
-    <Center>
-      <ProductTemplate product={data} role={"Client"} />
-      <ProductTemplate product={data} role={"Seller"} />
+    <Center className="mt-24">
+      <ProductTemplate product={data} role={sessionData?.role_name} />
     </Center>
   );
 };

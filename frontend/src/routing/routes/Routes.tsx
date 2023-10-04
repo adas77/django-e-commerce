@@ -14,8 +14,6 @@ const Routes = () => {
     <BrowserRouter>
       <_Routes>
         <Route path="/" element={<Layout />}>
-          <Route path={ERoutes.root} element={<Root />} />
-
           <Route path={ERoutes.products} element={<Products />} />
           <Route
             path={`${ERoutes.products}/${ERoutesDetail.product}`}
@@ -23,14 +21,14 @@ const Routes = () => {
           />
 
           <Route path={ERoutes.orders} element={<Orders />} />
-          <Route
+          {/* <Route
             path={`${ERoutes.orders}/${ERoutesDetail.order}`}
             element={<Order />}
-          />
+          /> */}
 
           <Route path="*" element={<NotFound />} />
+          <Route path={ERoutesDetail.login} element={<Login />} />
         </Route>
-        <Route path={ERoutes.login} element={<Login />} />
       </_Routes>
     </BrowserRouter>
   );

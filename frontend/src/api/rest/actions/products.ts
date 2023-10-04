@@ -12,6 +12,7 @@ const productSchemaValidator = z.object({
   image: z.string().url(),
   thumbnail: z.string().url(),
   category: z.string(),
+  quantity: z.number(),
 });
 
 export const productUpdateSchema = z.object({
@@ -23,6 +24,9 @@ export const productUpdateSchema = z.object({
   }),
   price: z.string().min(1, {
     message: "Price must be positive number.",
+  }),
+  quantity: z.number().positive({
+    message: "Quantity must be positive number.",
   }),
   image: z.optional(
     z
@@ -37,6 +41,16 @@ export const productUpdateSchema = z.object({
       )
   ),
 });
+
+export const createProductAddToBagSchema = (quantityAvailable: number) =>
+  z.object({
+    quantity: z
+      .number()
+      .min(1)
+      .max(quantityAvailable, {
+        message: `Should be between 0-${quantityAvailable}`,
+      }),
+  });
 
 const requestSchemaValidator = z.object({
   count: z.number(),

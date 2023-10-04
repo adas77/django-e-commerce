@@ -1,7 +1,6 @@
 import * as z from "zod";
 
-import { AuthStorage } from "@/api/auth/authStorage";
-import restClient from "@/api/rest";
+import { login } from "@/api/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ERoutes } from "@/routing/routes/Routes.enum";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,7 @@ const formSchema = z.object({
   }),
 });
 
-type LoginCredentials = z.infer<typeof formSchema>;
+export type LoginCredentials = z.infer<typeof formSchema>;
 
 type Props = {
   defaultUsername: string;
@@ -39,21 +39,20 @@ const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
   const { toast } = useToast();
   const { mutate: loginMutate, isLoading } = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
-      return (await restClient.post(`/token/`, credentials)).data;
+      return login(credentials);
     },
-    onSuccess(data) {
-      AuthStorage.setAccessToken(data.access);
-      AuthStorage.setRefreshToken(data.refresh);
-      toast({
-        variant: "default",
-        title: "Successfully logged in",
-      });
+    onSuccess() {
+      if (window.location.pathname !== ERoutes.products) {
+        window.location.replace(ERoutes.products);
+      }
     },
     onError() {
+      form.reset();
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        title: "Uh oh! Can`t login",
+        description:
+          "There was a problem with your request. Check your credentials and try again.",
       });
     },
   });
@@ -64,7 +63,7 @@ const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
       password: defaultPassword,
     },
   });
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: LoginCredentials) {
     loginMutate(values);
   }
 

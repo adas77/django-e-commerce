@@ -1,12 +1,12 @@
 import React from "react";
-
+import clsx from "clsx";
 type Props = {
   children: React.ReactNode;
+  className?: string;
 };
-
-const Center = ({ children }: Props) => {
+const Center = ({ children, className }: Props) => {
   return (
-    <div className="flex items-center justify-center h-screen">{children}</div>
+    <div className={clsx("grid place-items-center", className)}>{children}</div>
   );
 };
 

@@ -21,6 +21,12 @@ class User(AbstractUser):
     )
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
+    def get_role_name(self):
+        for choice in self.ROLE_CHOICES:
+            if choice[0] == self.role:
+                return choice[1]
+        return None
+
     def __str__(self):
         return self.username
 

@@ -30,3 +30,8 @@ class IsClient(permissions.BasePermission):
             and request.user.is_authenticated
             and request.user.role == User.CLIENT
         )
+
+
+class IsAuthenticated(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated

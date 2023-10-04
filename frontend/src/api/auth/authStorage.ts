@@ -1,3 +1,5 @@
+import { ERoutesDetail } from "@/routing/routes/Routes.enum";
+
 export class AuthStorage {
   private static access_token_key = "__access_token__";
   private static refresh_token_key = "__refresh_token__";
@@ -30,7 +32,10 @@ export class AuthStorage {
   static logout() {
     this.removeAccessToken();
     this.removeRefreshToken();
+    if (window.location.pathname !== ERoutesDetail.login) {
+      window.location.replace(ERoutesDetail.login);
+    }
   }
 }
 
-export type UserRole = "Client" | "Seller";
+export type UserRole = "Client" | "Seller" | undefined;
