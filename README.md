@@ -24,15 +24,15 @@ docker compose -p e-commerce-app-9c06b9f13011495c -f docker/docker-compose.dev.y
 
 ## Additional Features
 - Send Payment Reminder Task with Celery
-- ![mail-recv](doc/img/postman/mail-payment-reminder.png)
+  ![mail-recv](doc/img/postman/mail-payment-reminder.png)
 - Ensure that the product quantity does not exceed the quantity available in stock when make order.
-- ![ensure](doc/img/postman/client-post-order-not-enough-products.png)
+  ![ensure](doc/img/postman/client-post-order-not-enough-products.png)
 
 ## Frontend demo
 - CLIENT post order
-- ![client-post-order](doc/img/frontend/client-make-order.mp4) 
+  ![client-post-order](doc/img/frontend/client-make-order.mp4) 
 - SELLER update/delete product
-- ![seller-update-product](doc/img/frontend/seller-update-product.mp4) 
+  ![seller-update-product](doc/img/frontend/seller-update-product.mp4) 
 - UNAUTHORIZED list/sort/filter products
-- ![unauth-list-products](doc/img/frontend/unauthorized-search.mp4)
+  ![unauth-list-products](doc/img/frontend/unauthorized-search.mp4)
 
