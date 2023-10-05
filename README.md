@@ -41,6 +41,12 @@ https://github.com/adas77/django-e-commerce/assets/73692470/fb39b198-55d2-4764-a
 https://github.com/adas77/django-e-commerce/assets/73692470/d153e309-dfca-42e2-86c8-e385717c8e0d
 
 
+- SELLER products stats
+
+
+https://github.com/adas77/django-e-commerce/assets/73692470/bff98025-51a2-4543-bcd6-cf2439e73e51
+
+
 - UNAUTHORIZED list/sort/filter products
 
 
