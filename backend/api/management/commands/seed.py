@@ -13,35 +13,27 @@ fake = Faker()
 
 
 def create_fake_users():
-    password = "fF1aqm18"
+    def helper(username, role):
+        password = "fF1aqm18"
+        if not User.objects.filter(username=username).exists():
+            u = User.objects.create(
+                username=username,
+                email=fake.unique.email(),
+                role=role,
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+            )
+            u.set_password(password)
+            u.save()
 
-    client = User.objects.create(
-        username="client",
-        email=fake.unique.email(),
-        role=User.CLIENT,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-    )
-
-    seller = User.objects.create(
-        username="seller",
-        email=fake.unique.email(),
-        role=User.SELLER,
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-    )
-
-    client.set_password(password)
-    seller.set_password(password)
-
-    client.save()
-    seller.save()
+    helper("client", User.CLIENT)
+    helper("seller", User.SELLER)
 
 
 def create_fake_categories(num_categories):
     for _ in range(num_categories):
         name = fake.unique.word()
-        Category.objects.create(name=name)
+        Category.objects.get_or_create(name=name)
 
 
 def create_fake_products(num_products):
@@ -89,9 +81,9 @@ def create_fake_orders(num_orders, max_items_per_order):
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        num_fake_categories = 15
-        num_fake_products = 100
-        num_fake_orders = 50
+        num_fake_categories = 25
+        num_fake_products = 500
+        num_fake_orders = 10
         max_items_per_order = 10
 
         create_fake_users()

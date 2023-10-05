@@ -21,9 +21,14 @@ app = api
 sqlite = $(backend)/db.sqlite3
 migrations_dir = $(backend)/$(app)/migrations
 manage = ${backend}/manage.py
-fixture_accounts = ${backend}/api/fixtures/default_users.json
-fixture_tier = ${backend}/api/fixtures/default_tiers.json
-fixture_admin = ${backend}/api/fixtures/admin.json
+
+fixture_path = $(backend)/api/fixtures/
+
+fixture_users = $(fixture_path)users.json
+fixture_categories = $(fixture_path)categories.json
+fixture_products = $(fixture_path)products.json
+fixture_orders_items = $(fixture_path)orders_items.json
+fixture_orders = $(fixture_path)orders.json
 
 run = $(py) $(manage)
 migrate_make = $(py) makemigrations
@@ -31,7 +36,7 @@ migrate_make = $(py) makemigrations
 
 # FIXTURES
 f:
-	$(run) loaddata $(fixture_tier) $(fixture_accounts) $(fixture_admin)
+	$(run) loaddata $(fixture_users) $(fixture_categories) $(fixture_products) $(fixture_orders_items) $(fixture_orders)
 
 # RUN
 r:

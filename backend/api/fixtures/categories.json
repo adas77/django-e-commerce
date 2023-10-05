@@ -1,0 +1,177 @@
+[
+    {
+        "model": "api.category",
+        "pk": 1,
+        "fields": {
+            "name": "event"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 2,
+        "fields": {
+            "name": "society"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 3,
+        "fields": {
+            "name": "skill"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 4,
+        "fields": {
+            "name": "type"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 5,
+        "fields": {
+            "name": "bar"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 6,
+        "fields": {
+            "name": "prove"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 7,
+        "fields": {
+            "name": "also"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 8,
+        "fields": {
+            "name": "indicate"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 9,
+        "fields": {
+            "name": "serious"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 10,
+        "fields": {
+            "name": "short"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 11,
+        "fields": {
+            "name": "quality"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 12,
+        "fields": {
+            "name": "rise"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 13,
+        "fields": {
+            "name": "understand"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 14,
+        "fields": {
+            "name": "so"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 15,
+        "fields": {
+            "name": "determine"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 16,
+        "fields": {
+            "name": "else"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 17,
+        "fields": {
+            "name": "local"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 18,
+        "fields": {
+            "name": "draw"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 19,
+        "fields": {
+            "name": "act"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 20,
+        "fields": {
+            "name": "simply"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 21,
+        "fields": {
+            "name": "according"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 22,
+        "fields": {
+            "name": "road"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 23,
+        "fields": {
+            "name": "evidence"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 24,
+        "fields": {
+            "name": "wear"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 25,
+        "fields": {
+            "name": "them"
+        }
+    }
+]

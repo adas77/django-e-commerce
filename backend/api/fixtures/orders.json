@@ -1,0 +1,132 @@
+[
+    {
+        "model": "api.order",
+        "pk": 1,
+        "fields": {
+            "client": 1,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "60495 Tommy Light Apt. 174\nNorth Brent, PA 57357",
+            "order_date": "2023-10-05T18:30:31.820Z",
+            "payment_due_date": "2023-10-10T18:30:31.820Z",
+            "total_price": "19876.19"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 2,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "54276 Christine Summit Apt. 307\nWest Gregorymouth, WV 23778",
+            "order_date": "2023-10-05T18:30:31.868Z",
+            "payment_due_date": "2023-10-10T18:30:31.868Z",
+            "total_price": "12871.49"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 3,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "USS Frazier\nFPO AP 28546",
+            "order_date": "2023-10-05T18:30:31.898Z",
+            "payment_due_date": "2023-10-10T18:30:31.898Z",
+            "total_price": "26436.60"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 4,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "20708 Yang Fords\nMorrisbury, CA 30989",
+            "order_date": "2023-10-05T18:30:31.932Z",
+            "payment_due_date": "2023-10-10T18:30:31.932Z",
+            "total_price": "10485.47"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 5,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "9791 Brianna Inlet\nKlinebury, KY 85414",
+            "order_date": "2023-10-05T18:30:31.955Z",
+            "payment_due_date": "2023-10-10T18:30:31.955Z",
+            "total_price": "9975.44"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 6,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "459 Delacruz Common\nLake Diana, FM 51747",
+            "order_date": "2023-10-05T18:30:31.973Z",
+            "payment_due_date": "2023-10-10T18:30:31.972Z",
+            "total_price": "41459.45"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 7,
+        "fields": {
+            "client": 1,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "57474 Samantha Loop\nSouth Elizabeth, NM 38802",
+            "order_date": "2023-10-05T18:30:32.005Z",
+            "payment_due_date": "2023-10-10T18:30:32.005Z",
+            "total_price": "15674.59"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 8,
+        "fields": {
+            "client": 2,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "19464 Forbes Estate Suite 247\nEmilyberg, DE 80842",
+            "order_date": "2023-10-05T18:30:32.026Z",
+            "payment_due_date": "2023-10-10T18:30:32.026Z",
+            "total_price": "7797.76"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 9,
+        "fields": {
+            "client": 1,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "39491 Jenkins Mount Apt. 955\nSullivanberg, SD 97299",
+            "order_date": "2023-10-05T18:30:32.043Z",
+            "payment_due_date": "2023-10-10T18:30:32.043Z",
+            "total_price": "4845.72"
+        }
+    },
+    {
+        "model": "api.order",
+        "pk": 10,
+        "fields": {
+            "client": 1,
+            "first_name": "",
+            "last_name": "",
+            "delivery_address": "250 Harvey Spur\nNew Carolynland, MP 59635",
+            "order_date": "2023-10-05T18:30:32.054Z",
+            "payment_due_date": "2023-10-10T18:30:32.054Z",
+            "total_price": "10931.96"
+        }
+    }
+]
