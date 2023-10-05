@@ -88,8 +88,8 @@ d-down:
 d-run-py:
 	$(run) runserver 0.0.0.0:$(port)
 
-d-cmd: m-make m-run d-run-py
-# d-cmd: m-make m-run m-seed d-run-py
+# d-cmd: m-make m-run d-run-py
+d-cmd: m-make m-run m-seed d-run-py
 # d-cmd: m-make m-run f d-run-py
 
 d-test:
