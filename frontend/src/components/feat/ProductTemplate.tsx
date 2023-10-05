@@ -34,10 +34,9 @@ const ProductTemplate = ({
   product: { id, description, name, price, image, quantity },
 }: Props) => {
   const { user } = useAuth();
-
   const { toast } = useToast();
-  const { products, setProductQuantity } = useBag();
   const navigate = useNavigate();
+  const { products, setProductQuantity } = useBag();
 
   const { mutate: deleteMutation } = useMutation({
     mutationFn: () => serviceProduct.delete(`${id}`),
@@ -133,7 +132,7 @@ const ProductTemplate = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={user.role_name !== "Seller"}
+                    disabled={user && user.role_name !== "Seller"}
                     placeholder="description"
                     {...field}
                   />
@@ -151,7 +150,7 @@ const ProductTemplate = ({
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={user.role_name !== "Seller"}
+                    disabled={user && user.role_name !== "Seller"}
                     placeholder="name"
                     {...field}
                   />
@@ -169,7 +168,7 @@ const ProductTemplate = ({
                 <FormLabel>Price</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={user.role_name !== "Seller"}
+                    disabled={user && user.role_name !== "Seller"}
                     placeholder="price"
                     type="number"
                     {...field}
@@ -194,7 +193,7 @@ const ProductTemplate = ({
                 <FormLabel>Quantity</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={user.role_name !== "Seller"}
+                    disabled={user && user.role_name !== "Seller"}
                     placeholder="quantity"
                     type="number"
                     {...field}
@@ -206,7 +205,7 @@ const ProductTemplate = ({
             )}
           />
 
-          {user.role_name === "Seller" && (
+          {user && user.role_name === "Seller" && (
             <>
               <FormField
                 control={form.control}
@@ -243,7 +242,7 @@ const ProductTemplate = ({
         </form>
       </Form>
 
-      {user.role_name === "Client" && (
+      {user && user.role_name === "Client" && (
         <div className="grid place-items-end">
           <Form {...formBag}>
             <form

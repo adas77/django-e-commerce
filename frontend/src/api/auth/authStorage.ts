@@ -4,6 +4,10 @@ export class AuthStorage {
   private static user_role_key = "__user_role_key__";
   private static storage: Storage = localStorage;
 
+  static clear() {
+    this.storage.clear();
+  }
+
   static removeAccessToken() {
     this.storage.removeItem(this.access_token_key);
   }

@@ -4,7 +4,7 @@ import { ERoutesDetail } from "./Routes.enum";
 
 const ProtectedRouteSeller = () => {
   const { user } = useAuth();
-  return user.role_name === "Seller" ? (
+  return user && user.role_name === "Seller" ? (
     <Outlet />
   ) : (
     <Navigate to={ERoutesDetail.login} />

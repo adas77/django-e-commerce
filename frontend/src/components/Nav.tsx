@@ -4,16 +4,23 @@ import { Button } from "./ui/button";
 
 const Nav = () => {
   const { isAuth, user, logout } = useAuth();
-
-  const links = Object.entries(ERoutes)
+  const links: {
+    label: string;
+    link: ERoutes;
+  }[] = Object.entries(ERoutes)
     .filter(
-      (route) => !(user.role_name !== "Client" && route[1] === ERoutes.orders)
+      (route) =>
+        !(user && user.role_name !== "Client" && route[1] === ERoutes.orders) &&
+        !(
+          user &&
+          user.role_name !== "Seller" &&
+          route[1] === ERoutes.products_stats
+        )
     )
     .map((route) => {
-      return { label: route[0], link: route[1] };
+      return { label: route[0].toUpperCase(), link: route[1] };
     });
 
-  console.log(ERoutes.orders);
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 justify-center gap-8">
@@ -30,11 +37,15 @@ const Nav = () => {
           <div className="flex justify-center gap-2">
             <Button disabled>{user.email}</Button>
             <Button disabled>{user.role_name}</Button>
-            <Button onClick={() => logout()}>LOGOUT</Button>
+            <Button className="text-xl" onClick={() => logout()}>
+              LOGOUT
+            </Button>
           </div>
         ) : (
           <Button>
-            <a href={ERoutesDetail.login}>LOGIN</a>
+            <a className="text-xl" href={ERoutesDetail.login}>
+              LOGIN
+            </a>
           </Button>
         )}
       </div>

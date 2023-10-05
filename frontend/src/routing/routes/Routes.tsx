@@ -7,6 +7,8 @@ import { BrowserRouter, Route, Routes as _Routes } from "react-router-dom";
 import Layout from "../abstract/Layout";
 import { ERoutes, ERoutesDetail } from "./Routes.enum";
 import ProtectedRouteClient from "./ProtectedRouteClient";
+import ProtectedRouteSeller from "./ProtectedRouteSeller";
+import ProductsStats from "@/pages/products/ProductsStats";
 
 const Routes = () => {
   return (
@@ -20,6 +22,10 @@ const Routes = () => {
           />
           <Route path="/" element={<ProtectedRouteClient />}>
             <Route path={ERoutes.orders} element={<Orders />} />
+          </Route>
+
+          <Route path="/" element={<ProtectedRouteSeller />}>
+            <Route path={ERoutes.products_stats} element={<ProductsStats />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

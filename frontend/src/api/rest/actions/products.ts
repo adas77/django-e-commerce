@@ -59,9 +59,41 @@ const requestSchemaValidator = z.object({
   results: z.array(productSchemaValidator),
 });
 
+const formatDate = (date: Date) => {
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date`);
+  }
+
+  const dateString = date.toISOString().slice(0, 10);
+  return dateString;
+};
+
+const isValidDate = (date: Date) => {
+  const dateString = formatDate(date);
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  return dateRegex.test(dateString);
+};
+
+const statsRequestSchemaValidator = z.object({
+  date_from: z.date().refine(isValidDate, {
+    message: "Invalid date format. Use yyyy-mm-dd.",
+  }),
+  date_to: z.date().refine(isValidDate, {
+    message: "Invalid date format. Use yyyy-mm-dd.",
+  }),
+  num_products: z.number(),
+});
+
+const statsResponseSchemaValidator = z.object({
+  product_id: z.number(),
+  total_quantity_ordered: z.number(),
+});
+
 export type ProductSchema = z.infer<typeof productSchemaValidator>;
 export type RequestSchema = z.infer<typeof requestSchemaValidator>;
 export type ProductUpdateSchema = z.infer<typeof productUpdateSchema>;
+export type StatsRequestSchema = z.infer<typeof statsRequestSchemaValidator>;
+export type StatsResponseSchema = z.infer<typeof statsResponseSchemaValidator>;
 
 const serviceProduct = {
   async get(
@@ -107,6 +139,19 @@ const serviceProduct = {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res;
+  },
+
+  async getStats(data: StatsRequestSchema): Promise<StatsResponseSchema[]> {
+    const date_from = formatDate(data.date_from);
+    const date_to = formatDate(data.date_to);
+
+    const res = (
+      await restClient.get(
+        `/order/stats/?date_from=${date_from}&date_to=${date_to}&num_products=${data.num_products}`
+      )
+    ).data;
+    const products = z.array(statsResponseSchemaValidator).parse(res);
+    return products;
   },
 };
 

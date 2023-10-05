@@ -4,7 +4,7 @@ import { ERoutesDetail } from "./Routes.enum";
 
 const ProtectedRouteClient = () => {
   const { user } = useAuth();
-  return user.role_name === "Client" ? (
+  return user && user.role_name === "Client" ? (
     <Outlet />
   ) : (
     <Navigate to={ERoutesDetail.login} />

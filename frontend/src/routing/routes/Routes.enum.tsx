@@ -1,5 +1,6 @@
 export enum ERoutes {
   products = "/products",
+  products_stats = "/products/stats",
   orders = "/orders",
 }
 

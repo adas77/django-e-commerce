@@ -159,7 +159,7 @@ class OrderStatsView(generics.ListAPIView):
     permission_classes = [IsSeller]
 
     def get(self, request):
-        serializer = DateRangeSerializer(data=request.data)
+        serializer = DateRangeSerializer(data=request.query_params)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
