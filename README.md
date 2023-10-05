@@ -30,9 +30,21 @@ docker compose -p e-commerce-app-9c06b9f13011495c -f docker/docker-compose.dev.y
 
 ## Frontend demo
 - CLIENT post order
-  ![client-post-order](doc/img/frontend/client-make-order.mp4) 
+
+
+https://github.com/adas77/django-e-commerce/assets/73692470/fb39b198-55d2-4764-a93c-8e9b8f0e33b4
+
+
 - SELLER update/delete product
-  ![seller-update-product](doc/img/frontend/seller-update-product.mp4) 
+
+
+https://github.com/adas77/django-e-commerce/assets/73692470/d153e309-dfca-42e2-86c8-e385717c8e0d
+
+
 - UNAUTHORIZED list/sort/filter products
-  ![unauth-list-products](doc/img/frontend/unauthorized-search.mp4)
+
+
+https://github.com/adas77/django-e-commerce/assets/73692470/c6ccd96a-72ef-4ba5-84c6-b8b51e0f101f
+
+
 
