@@ -25,7 +25,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../ui/use-toast";
-import Center from "@/routing/abstract/Center";
 
 type Props = {
   product: ProductSchema;
@@ -36,9 +35,8 @@ const ProductTemplate = ({
   product: { id, description, name, price, image, quantity },
   role,
 }: Props) => {
-  // TODO: as client add product of quantity, validate quantity
   const { toast } = useToast();
-  const { setProductQuantity } = useBag();
+  const { products, setProductQuantity } = useBag();
   const navigate = useNavigate();
 
   const { mutate: deleteMutation } = useMutation({
@@ -101,13 +99,14 @@ const ProductTemplate = ({
   const formBag = useForm<ProductAddToBagSchema>({
     resolver: zodResolver(productAddToBagSchema),
     defaultValues: {
-      quantity: 0,
+      quantity: products[id],
     },
   });
 
   async function onSubmitBag(values: z.infer<typeof productAddToBagSchema>) {
     const quantityToBag = values.quantity;
     setProductQuantity(id, quantityToBag);
+    navigate(ERoutes.products, { replace: true });
     toast({
       variant: "default",
       title: "Added product",

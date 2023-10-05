@@ -10,10 +10,13 @@ export const orderSchemaValidator = z.object({
   delivery_address: z.string().min(1),
   first_name: z.string().min(1),
   last_name: z.string().min(1),
-  order_items: z.array(orderItemsValidator),
+  order_items: z
+    .array(orderItemsValidator)
+    .nonempty({ message: "No products in bag" }),
 });
 
 export type OrderSchema = z.infer<typeof orderSchemaValidator>;
+export type OrderItemsSchema = z.infer<typeof orderItemsValidator>;
 
 const serviceOrder = {
   async make(order: OrderSchema): Promise<OrderSchema> {

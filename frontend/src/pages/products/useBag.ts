@@ -7,6 +7,7 @@ type State = {
 
 type Action = {
   setProductQuantity: (productId: number, quantity: number) => void;
+  resetProducts: () => void;
 };
 
 const useBag = create<State & Action>()(
@@ -24,6 +25,9 @@ const useBag = create<State & Action>()(
             }
             return { products: updatedProducts };
           });
+        },
+        resetProducts: () => {
+          set({ products: {} });
         },
       }),
       {

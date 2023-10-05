@@ -1,13 +1,12 @@
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
-import Root from "@/pages/Root";
+import Orders from "@/pages/orders/Orders";
+import Product from "@/pages/products/Product";
+import Products from "@/pages/products/Products";
 import { BrowserRouter, Route, Routes as _Routes } from "react-router-dom";
 import Layout from "../abstract/Layout";
 import { ERoutes, ERoutesDetail } from "./Routes.enum";
-import Products from "@/pages/products/Products";
-import Product from "@/pages/products/Product";
-import Orders from "@/pages/orders/Orders";
-import Order from "@/pages/orders/Order";
+import ProtectedRouteClient from "./ProtectedRouteClient";
 
 const Routes = () => {
   return (
@@ -19,12 +18,9 @@ const Routes = () => {
             path={`${ERoutes.products}/${ERoutesDetail.product}`}
             element={<Product />}
           />
-
-          <Route path={ERoutes.orders} element={<Orders />} />
-          {/* <Route
-            path={`${ERoutes.orders}/${ERoutesDetail.order}`}
-            element={<Order />}
-          /> */}
+          <Route path="/" element={<ProtectedRouteClient />}>
+            <Route path={ERoutes.orders} element={<Orders />} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
           <Route path={ERoutesDetail.login} element={<Login />} />
