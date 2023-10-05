@@ -14,8 +14,8 @@ docker compose -p e-commerce-app-9c06b9f13011495c -f docker/docker-compose.dev.y
 
 ## Apps
 
-- `FRONTEND CLIENT` -> `http://localhost:5173/`
-- `API` -> `http://localhost:8000/api`
+- `FRONTEND CLIENT` -> [http://localhost:5173/](http://localhost:5173/)
+- `API` -> [http://localhost:8000/api/](http://localhost:8000/api/)
 
 ## Postman
 
