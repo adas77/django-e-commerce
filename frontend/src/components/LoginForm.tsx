@@ -1,6 +1,7 @@
 import * as z from "zod";
 
-import { login } from "@/api/auth/useAuth";
+import { AuthStorage } from "@/api/auth/authStorage";
+import useAuth, { login } from "@/api/auth/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -37,11 +38,13 @@ type Props = {
 
 const LoginForm = ({ defaultUsername, defaultPassword, title }: Props) => {
   const { toast } = useToast();
+  const { authenticate } = useAuth();
   const { mutate: loginMutate, isLoading } = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
       return login(credentials);
     },
     onSuccess() {
+      authenticate(AuthStorage.getAccessToken()!);
       if (window.location.pathname !== ERoutes.products) {
         window.location.replace(ERoutes.products);
       }

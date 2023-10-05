@@ -2,11 +2,13 @@ from django.db import transaction
 from django.db.models import Sum
 from rest_framework import generics, mixins, status
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Category, Order, OrderItem, Product
 from .permissions import IsAuthenticated, IsClient, IsSeller, IsSellerOrReadOnly
 from .serializers import (
     CategorySerializer,
+    CustomTokenObtainPairSerializer,
     DateRangeSerializer,
     OrderDetailSerializer,
     OrderItemSerializer,
@@ -176,3 +178,7 @@ class OrderStatsView(generics.ListAPIView):
 
         data = list(queryset)
         return Response(data)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

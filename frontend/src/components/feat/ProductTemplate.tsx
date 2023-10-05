@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { UserRole } from "@/api/auth/authStorage";
+import useAuth from "@/api/auth/useAuth";
 import serviceProduct, {
   ProductSchema,
   ProductUpdateSchema,
@@ -28,13 +28,13 @@ import { useToast } from "../ui/use-toast";
 
 type Props = {
   product: ProductSchema;
-  role: UserRole;
 };
 
 const ProductTemplate = ({
   product: { id, description, name, price, image, quantity },
-  role,
 }: Props) => {
+  const { user } = useAuth();
+
   const { toast } = useToast();
   const { products, setProductQuantity } = useBag();
   const navigate = useNavigate();
@@ -115,9 +115,12 @@ const ProductTemplate = ({
   }
 
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 mb-10">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-96">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-96 "
+        >
           <div className="flex items-center justify-center">
             <img width={150} height={150} src={image} />
           </div>
@@ -130,7 +133,7 @@ const ProductTemplate = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={role !== "Seller"}
+                    disabled={user.role_name !== "Seller"}
                     placeholder="description"
                     {...field}
                   />
@@ -148,7 +151,7 @@ const ProductTemplate = ({
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={role !== "Seller"}
+                    disabled={user.role_name !== "Seller"}
                     placeholder="name"
                     {...field}
                   />
@@ -166,7 +169,7 @@ const ProductTemplate = ({
                 <FormLabel>Price</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={role !== "Seller"}
+                    disabled={user.role_name !== "Seller"}
                     placeholder="price"
                     type="number"
                     {...field}
@@ -191,7 +194,7 @@ const ProductTemplate = ({
                 <FormLabel>Quantity</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={role !== "Seller"}
+                    disabled={user.role_name !== "Seller"}
                     placeholder="quantity"
                     type="number"
                     {...field}
@@ -203,7 +206,7 @@ const ProductTemplate = ({
             )}
           />
 
-          {role === "Seller" && (
+          {user.role_name === "Seller" && (
             <>
               <FormField
                 control={form.control}
@@ -240,7 +243,7 @@ const ProductTemplate = ({
         </form>
       </Form>
 
-      {role === "Client" && (
+      {user.role_name === "Client" && (
         <div className="grid place-items-end">
           <Form {...formBag}>
             <form

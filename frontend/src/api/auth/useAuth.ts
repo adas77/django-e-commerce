@@ -1,11 +1,13 @@
 import restClient from "@/api/rest";
-import { LoginCredentials } from "@/components/LoginForm";
-import { EQueryKeys } from "@/utils/queryClient/QueryKeys.enum";
-import { useQuery } from "@tanstack/react-query";
+import jwt_decode from "jwt-decode";
 import { z } from "zod";
+import { create } from "zustand";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { AuthStorage } from "./authStorage";
+import { LoginCredentials } from "@/components/LoginForm";
+import { ERoutesDetail } from "@/routing/routes/Routes.enum";
 
-const userResponseSchemaValidator = z.object({
+export const userResponseSchemaValidator = z.object({
   username: z.string(),
   first_name: z.string(),
   last_name: z.string(),
@@ -18,17 +20,50 @@ export async function login(credentials: LoginCredentials) {
   const data = (await restClient.post(`/token/`, credentials)).data;
   AuthStorage.setAccessToken(data.access);
   AuthStorage.setRefreshToken(data.refresh);
-  const me = await getMe();
-  return me;
-}
-async function getMe(): Promise<UserResponseSchema> {
-  const res = (await restClient.get(`/me`)).data;
-  const user = userResponseSchemaValidator.parse(res);
-  return user;
 }
 
-const useAuth = () => {
-  return useQuery({ queryKey: [EQueryKeys.me], queryFn: getMe });
+type State = {
+  user: UserResponseSchema;
 };
+
+type Action = {
+  authenticate: (token: string) => Promise<void>;
+  logout: () => void;
+  isAuth: () => boolean;
+};
+
+const useAuth = create<State & Action>(
+  devtools(
+    persist(
+      (set) => ({
+        user: null,
+        authenticate: (token) => {
+          const decodedToken: { [key: string]: unknown } = jwt_decode(token);
+          const validatedUser =
+            userResponseSchemaValidator.safeParse(decodedToken);
+
+          if (validatedUser.success) {
+            set({ user: validatedUser.data });
+          }
+        },
+        logout: () => {
+          AuthStorage.removeAccessToken();
+          AuthStorage.removeRefreshToken();
+          set({ user: {} });
+          if (window.location.pathname !== ERoutesDetail.login) {
+            window.location.replace(ERoutesDetail.login);
+          }
+        },
+        isAuth: () => {
+          return !!AuthStorage.getAccessToken();
+        },
+      }),
+      {
+        name: "__AUTH_DATA__",
+        storage: createJSONStorage(() => localStorage),
+      }
+    )
+  )
+);
 
 export default useAuth;

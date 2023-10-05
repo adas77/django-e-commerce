@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import Category, Order, OrderItem, Product, User
 
@@ -60,3 +61,16 @@ class DateRangeSerializer(serializers.Serializer):
     date_from = serializers.DateField(input_formats=["%Y-%m-%d"])
     date_to = serializers.DateField(input_formats=["%Y-%m-%d"])
     num_products = serializers.IntegerField(default=10)
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user: User):
+        token = super().get_token(user)
+        token["role_name"] = user.get_role_name()
+        token["username"] = user.username
+        token["first_name"] = user.first_name
+        token["last_name"] = user.last_name
+        token["email"] = user.email
+
+        return token

@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
+import useAuth from "@/api/auth/useAuth";
 import serviceOrder, {
   OrderSchema,
   orderSchemaValidator,
@@ -29,14 +30,14 @@ import serviceOrder, {
 import { useToast } from "@/components/ui/use-toast";
 import Center from "@/routing/abstract/Center";
 import { ERoutes } from "@/routing/routes/Routes.enum";
-import { useOutletContext } from "react-router-dom";
 import useBag from "../products/useBag";
 
 const Orders = () => {
   const { toast } = useToast();
   const { products, resetProducts } = useBag();
-  const { first_name, last_name } = useOutletContext();
-
+  const {
+    user: { first_name, last_name },
+  } = useAuth();
   const orderItems = Object.entries(products).map(([productId, quantity]) => ({
     product: parseInt(productId),
     quantity,
