@@ -19,8 +19,6 @@ services:
     container_name: ${NODE_CONTAINER_NAME}
     ports:
       - 5173:5173
-    volumes:
-      - ../frontend:/app
 
   redis:
     build:

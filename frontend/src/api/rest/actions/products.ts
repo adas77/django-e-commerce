@@ -25,7 +25,7 @@ export const productUpdateSchema = z.object({
   price: z.string().min(1, {
     message: "Price must be positive number.",
   }),
-  quantity: z.number().positive({
+  quantity: z.number().min(1, {
     message: "Quantity must be positive number.",
   }),
   image: z.optional(

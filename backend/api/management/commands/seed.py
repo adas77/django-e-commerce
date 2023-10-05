@@ -81,8 +81,8 @@ def create_fake_orders(num_orders, max_items_per_order):
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        num_fake_categories = 25
-        num_fake_products = 500
+        num_fake_categories = 10
+        num_fake_products = 50
         num_fake_orders = 10
         max_items_per_order = 10
 

@@ -94,13 +94,14 @@ class Order(models.Model):
 
 @receiver(post_save, sender=Order)
 def send_email_after_creating_order(sender, instance, **kwargs):
-    send_mail(
-        "Your order has been created",
-        f"Remember to make a payment of {instance.total_price} PLN by {instance.payment_due_date}",
-        settings.EMAIL_SENDER,
-        [instance.client.email],
-        fail_silently=False,
-    )
+    if instance.total_price:
+        send_mail(
+            "Your order has been created",
+            f"Remember to make a payment of {instance.total_price} PLN by {instance.payment_due_date}",
+            settings.EMAIL_SENDER,
+            [instance.client.email],
+            fail_silently=False,
+        )
 
 
 class OrderItem(models.Model):

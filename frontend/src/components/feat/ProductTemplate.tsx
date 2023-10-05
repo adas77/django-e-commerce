@@ -197,6 +197,12 @@ const ProductTemplate = ({
                     placeholder="quantity"
                     type="number"
                     {...field}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      if (!isNaN(value)) {
+                        field.onChange(value);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormDescription>Number of available froducts</FormDescription>

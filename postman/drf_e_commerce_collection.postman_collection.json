@@ -118,6 +118,54 @@
 			"response": []
 		},
 		{
+			"name": "me Client",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_client}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/me/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"me",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me Seller",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token_access_seller}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api}}/me/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"me",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET product_category Client",
 			"request": {
 				"method": "GET",
@@ -129,13 +177,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{api}}/product/category",
+					"raw": "{{api}}/product/category/",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"product",
-						"category"
+						"category",
+						""
 					]
 				}
 			},
@@ -153,13 +202,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{api}}/product/category",
+					"raw": "{{api}}/product/category/",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"product",
-						"category"
+						"category",
+						""
 					]
 				}
 			},
@@ -240,13 +290,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{api}}/product/category",
+					"raw": "{{api}}/product/category/",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"product",
-						"category"
+						"category",
+						""
 					]
 				}
 			},
@@ -273,13 +324,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{api}}/product/category",
+					"raw": "{{api}}/product/category/",
 					"host": [
 						"{{api}}"
 					],
 					"path": [
 						"product",
-						"category"
+						"category",
+						""
 					]
 				}
 			},
@@ -546,7 +598,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"client\": 1,\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 8,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 9,\n            \"quantity\": 2\n        }\n    ]\n}\n",
+					"raw": "{\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 15,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 16,\n            \"quantity\": 2\n        }\n    ]\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -579,7 +631,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"client\": 1,\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 8,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 9,\n            \"quantity\": 2\n        }\n    ]\n}\n",
+					"raw": "{\n    \"delivery_address\": \"123 Main St\",\n    \"first_name\": \"_FIRST_NAME\",\n    \"last_name\": \"_LAST_NAME\",\n    \"order_items\": [\n        {\n            \"product\": 8,\n            \"quantity\": 5\n        },\n        {\n            \"product\": 9,\n            \"quantity\": 2\n        }\n    ]\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -601,9 +653,6 @@
 		},
 		{
 			"name": "GET most_freq_ordered Client",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -613,17 +662,8 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"date_from\": \"2010-01-01\",\n    \"date_to\": \"2023-12-01\",\n    \"num_products\": 5\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{api}}/order/stats/",
+					"raw": "{{api}}/order/stats/?date_from=2010-01-01&date_to=2023-12-01&num_products=5",
 					"host": [
 						"{{api}}"
 					],
@@ -631,6 +671,20 @@
 						"order",
 						"stats",
 						""
+					],
+					"query": [
+						{
+							"key": "date_from",
+							"value": "2010-01-01"
+						},
+						{
+							"key": "date_to",
+							"value": "2023-12-01"
+						},
+						{
+							"key": "num_products",
+							"value": "5"
+						}
 					]
 				}
 			},
@@ -638,9 +692,6 @@
 		},
 		{
 			"name": "GET most_freq_ordered Seller",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -650,17 +701,8 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"date_from\": \"2010-01-01\",\n    \"date_to\": \"2023-12-01\",\n    \"num_products\": 5\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{api}}/order/stats/",
+					"raw": "{{api}}/order/stats/?date_from=2010-01-01&date_to=2023-12-01&num_products=5",
 					"host": [
 						"{{api}}"
 					],
@@ -668,6 +710,20 @@
 						"order",
 						"stats",
 						""
+					],
+					"query": [
+						{
+							"key": "date_from",
+							"value": "2010-01-01"
+						},
+						{
+							"key": "date_to",
+							"value": "2023-12-01"
+						},
+						{
+							"key": "num_products",
+							"value": "5"
+						}
 					]
 				}
 			},
