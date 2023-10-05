@@ -1,4 +1,3 @@
-# from django.contrib.auth.models import User
 import os
 import random
 from decimal import Decimal
@@ -13,23 +12,7 @@ from api.models import Category, Order, OrderItem, Product, User
 fake = Faker()
 
 
-def create_fake_users(num_users):
-    # for _ in range(num_users):
-    #     username = fake.unique.user_name()
-    #     email = fake.unique.email()
-    #     password = "fF1aqm18"
-    #     role_id, _ = random.choice(User.ROLE_CHOICES)
-    #     first_name = fake.first_name()
-    #     last_name = fake.last_name()
-
-    #     User.objects.create(
-    #         username=username,
-    #         email=email,
-    #         password=password,
-    #         role=role_id,
-    #         first_name=first_name,
-    #         last_name=last_name
-    #     )
+def create_fake_users():
     password = "fF1aqm18"
 
     client = User.objects.create(
@@ -106,13 +89,12 @@ def create_fake_orders(num_orders, max_items_per_order):
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        num_fake_users = 5
         num_fake_categories = 15
         num_fake_products = 100
         num_fake_orders = 50
         max_items_per_order = 10
 
-        create_fake_users(num_fake_users)
+        create_fake_users()
         create_fake_categories(num_fake_categories)
         create_fake_products(num_fake_products)
         create_fake_orders(num_fake_orders, max_items_per_order)
